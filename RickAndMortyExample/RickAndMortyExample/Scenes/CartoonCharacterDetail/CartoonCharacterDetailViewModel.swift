@@ -24,7 +24,7 @@ class CartoonCharacterDetailViewModel: ObservableObject {
   
   init(
     cartoonCharacterService: CartoonCharacterService = .init(),
-    imageService: ImageServiceProtocol = ImageService()
+    imageService: ImageServiceProtocol = ImageService.shared
   ) {
     self.cartoonCharacterService = cartoonCharacterService
     self.imageService = imageService

@@ -13,7 +13,7 @@ struct CartoonCharacterDetailBuilder: SceneBuilding {
   init(
     characterId: Int,
     cartoonCharacterService: CartoonCharacterService,
-    imageService: ImageService
+    imageService: ImageService = ImageService.shared
   ) {
     self.characterId = characterId
     self.cartoonCharacterService = cartoonCharacterService
