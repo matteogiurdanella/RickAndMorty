@@ -14,8 +14,16 @@ protocol ImageServiceProtocol {
 }
 
 actor ImageService: ImageServiceProtocol {
+  
+  static let shared = ImageService()
+  
   private let cache = NSCache<NSString, UIImage>()
   private var runningTasks: [String: Task<UIImage?, Never>] = [:]
+  
+  private init() {
+    cache.countLimit = 100
+    cache.totalCostLimit = 1024 * 1024 * 100
+  }
   
   func loadImage(from urlString: String) async -> UIImage? {
     // Return cached image if available

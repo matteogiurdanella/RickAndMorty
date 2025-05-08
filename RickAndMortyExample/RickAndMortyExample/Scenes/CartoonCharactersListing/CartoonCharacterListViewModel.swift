@@ -12,6 +12,7 @@ final class CartoonCharacterListViewModel: ObservableObject {
   @Published var characters: [CartoonCharacter] = []
   @Published var isLoading = false
   @Published var errorMessage: String?
+  @Published var searchText: String = ""
   
   private let charactersService: CartoonCharacterServiceProtocol
   
@@ -26,7 +27,7 @@ final class CartoonCharacterListViewModel: ObservableObject {
     
     do {
       let pageModel = try await charactersService.fetchCharacters()
-      characters.append(contentsOf: pageModel.results)
+      characters = pageModel.results
     } catch let error as NetworkError {
       errorMessage = error.errorDescription
     } catch {
@@ -34,6 +35,20 @@ final class CartoonCharacterListViewModel: ObservableObject {
     }
     
     isLoading = false
+  }
+  
+  var filteredCharacters: [CartoonCharacter] {
+    guard !searchText.isEmpty else { return characters }
+    
+    return characters.filter { character in
+      character.name.localizedCaseInsensitiveContains(searchText) ||
+      character.status.rawValue.localizedCaseInsensitiveContains(searchText) ||
+      character.species.localizedCaseInsensitiveContains(searchText) ||
+      character.type.localizedCaseInsensitiveContains(searchText) ||
+      character.gender.rawValue.localizedCaseInsensitiveContains(searchText) ||
+      character.origin.name.localizedCaseInsensitiveContains(searchText) ||
+      character.location.name.localizedCaseInsensitiveContains(searchText)
+    }
   }
 }
 

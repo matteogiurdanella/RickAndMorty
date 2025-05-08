@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct CartoonPhotoCellView: View {
-  @ObservedObject private var viewModel: CartoonCharacterCellViewModel
+  @StateObject private var viewModel: CartoonCharacterCellPhotoViewModel
 
-  init(viewModel: CartoonCharacterCellViewModel) {
-    self.viewModel = viewModel
+  init(imageUrl: String) {
+    _viewModel = StateObject(wrappedValue: CartoonCharacterCellPhotoViewModel(imageUrl: imageUrl))
   }
   
   var body: some View {
@@ -30,5 +30,8 @@ struct CartoonPhotoCellView: View {
     }
     .frame(width: 60, height: 60)
     .clipShape(RoundedRectangle(cornerRadius: 8))
+    .onAppear() {
+      viewModel.loadImage()
+    }
   }
 }
