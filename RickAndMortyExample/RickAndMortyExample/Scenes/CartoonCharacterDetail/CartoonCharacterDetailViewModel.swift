@@ -53,14 +53,18 @@ class CartoonCharacterDetailViewModel: ObservableObject {
   
   private func loadCharacterImage(from urlString: String) async {
     loadImageTask?.cancel()
-    isImageLoading = true
+    await MainActor.run {
+      isImageLoading = true
+    }
     
     loadImageTask = Task { [weak self] in
       guard let self = self else { return }
       let image = await imageService.loadImage(from: urlString)
       if Task.isCancelled { return }
-      self.postImage = image
-      self.isImageLoading = false
+      await MainActor.run {
+        self.postImage = image
+        self.isImageLoading = false
+      }
     }
   }
   
