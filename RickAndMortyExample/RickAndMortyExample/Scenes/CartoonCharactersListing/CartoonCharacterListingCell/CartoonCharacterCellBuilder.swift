@@ -22,6 +22,6 @@ struct CartoonCharacterCellBuilder: SceneBuilding {
   }
   
   var view: CartoonCharacterCell {
-    CartoonCharacterCell(character: character, viewModel: viewModel)
+    CartoonCharacterCell(viewModel: viewModel)
   }
 }

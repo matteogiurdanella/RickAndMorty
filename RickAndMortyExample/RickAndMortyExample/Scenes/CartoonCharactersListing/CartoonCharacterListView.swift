@@ -18,27 +18,13 @@ struct CartoonCharacterListView: View {
     NavigationView {
       ZStack {
         if viewModel.isLoading {
-          ProgressView()
-            .scaleEffect(1.5)
+          LoadingView()
         } else if let errorMessage = viewModel.errorMessage {
-          VStack {
-            Text("Error")
-              .font(.title)
-              .foregroundColor(.red)
-            Text(errorMessage)
-              .foregroundColor(.secondary)
-            Button("Try Again") {
-              Task {
-                await viewModel.fetchPosts()
-              }
+          ErrorView(errorMessage) {
+            Task {
+              await viewModel.fetchCartoonCharacters()
             }
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(8)
-            .padding(.top)
           }
-          .padding()
         } else {
           List(viewModel.characters) { character in
             NavigationLink(
@@ -56,14 +42,14 @@ struct CartoonCharacterListView: View {
           }
           .listStyle(PlainListStyle())
           .refreshable {
-            await viewModel.fetchPosts()
+            await viewModel.fetchCartoonCharacters()
           }
         }
       }
       .navigationTitle("Characters")
       .onAppear {
         Task {
-          await viewModel.fetchPosts()
+          await viewModel.fetchCartoonCharacters()
         }
       }
     }

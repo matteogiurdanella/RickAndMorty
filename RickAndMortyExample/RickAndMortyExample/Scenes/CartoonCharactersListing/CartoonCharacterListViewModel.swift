@@ -20,7 +20,7 @@ final class CartoonCharacterListViewModel: ObservableObject {
   }
   
   @MainActor
-  func fetchPosts() async {
+  func fetchCartoonCharacters() async {
     isLoading = true
     errorMessage = nil
     

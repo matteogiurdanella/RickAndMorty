@@ -44,7 +44,6 @@ actor ImageService: ImageServiceProtocol {
           return nil
         }
         
-        // Cache the image (actors can call class methods on non-actor-isolated types like NSCache)
         self.cache.setObject(image, forKey: urlString as NSString)
         return image
       } catch {
