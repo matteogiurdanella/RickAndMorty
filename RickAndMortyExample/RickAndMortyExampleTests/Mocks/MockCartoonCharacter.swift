@@ -1,24 +1,28 @@
 //
-//  CartoonCharacter+Preview.swift
+//  MockCartoonCharacter.swift
 //  RickAndMortyExample
 //
-//  Created by matteo giurdanella on 08.05.25.
+//  Created by matteo giurdanella on 14.05.25.
 //
 
+@testable import RickAndMortyExample
+
 extension CartoonCharacter {
-  static func previewMock(
-    id: Int
+  static func mock(
+    id: Int,
+    name: String? = nil,
+    imageUrl: String? = nil
   ) -> Self {
     CartoonCharacter(
       id: id,
-      name: "\(id)",
+      name: name ?? "\(id)",
       status: .alive,
       species: "",
       type: "",
       gender: .male,
       origin: .init(name: "", url: ""),
       location: .init(name: "", url: ""),
-      image: "",
+      image: imageUrl ?? "",
       episode: [],
       url: "",
       created: ""

@@ -14,8 +14,13 @@ final class CartoonCharacterServiceTests {
   
   @Test
   func fetchCharacterList() async throws {
+    // Given
     networkService.responseType = .characterList
+    
+    // When
     let pageModel = try? await sut.fetchCharacters()
+    
+    // Then
     #expect(pageModel?.info.count == 826)
     #expect(pageModel?.info.pages == 42)
     #expect(pageModel?.info.next == "https://rickandmortyapi.com/api/character?page=2")
@@ -26,17 +31,27 @@ final class CartoonCharacterServiceTests {
   
   @Test
   func fetchCharacterById() async throws {
+    // Given
     networkService.responseType = .characterDetail
+    
+    // When
     let character = try? await sut.fetchCharacters(id: 1)
+    
+    // Then
     #expect(character != nil)
     #expect(networkService.invocation == [.fetch(endpoint: "character/1")])
   }
   
   @Test
   func throwError() async throws {
+    // Given
     let error: NetworkError = .invalidData
     networkService.throwError = error
+    
+    // When
     let character = try? await sut.fetchCharacters(id: 1)
+    
+    // Then
     #expect(character == nil)
     #expect(networkService.invocation == [.fetch(endpoint: "character/1"), .error(error)])
   }
