@@ -5,6 +5,13 @@
 //  Created by matteo giurdanella on 07.05.25.
 //
 
+/**
+ What would I have improved here?
+ The URLSession could be extracted as dependency.
+ Doing so this class would be easily testable.
+ This wasn't done since the implementatino is pretty straight forward but in case of complex implementation I would advice to do so.
+ */
+
 import Foundation
 
 protocol NetworkServiceProtocol {

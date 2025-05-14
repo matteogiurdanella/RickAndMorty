@@ -8,8 +8,8 @@
 import Foundation
 
 protocol CartoonCharacterServiceProtocol {
-    func fetchCharacters() async throws -> CartoonCharacterListPageModel
-    func fetchCharacters(id: Int) async throws -> CartoonCharacter
+  func fetchCharacters() async throws -> CartoonCharacterListPageModel
+  func fetchCharacters(id: Int) async throws -> CartoonCharacter
 }
 
 final class CartoonCharacterService: CartoonCharacterServiceProtocol {
