@@ -17,13 +17,13 @@ struct CartoonPhotoCellView: View {
   var body: some View {
     ZStack {
       if viewModel.isLoading {
-        PhotoLoading()
+        PhotoLoadingView()
       } else if let image = viewModel.image {
         Image(uiImage: image)
           .resizable()
           .aspectRatio(contentMode: .fill)
       } else if viewModel.loadFailed {
-        PhotoError {
+        PhotoErrorView {
           viewModel.retryLoading()
         }
       }
