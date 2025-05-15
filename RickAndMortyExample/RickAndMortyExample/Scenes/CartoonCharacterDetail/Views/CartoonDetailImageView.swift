@@ -1,5 +1,5 @@
 //
-//  CartoonDetailImage.swift
+//  CartoonDetailImageView.swift
 //  RickAndMortyExample
 //
 //  Created by matteo giurdanella on 08.05.25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CartoonDetailImage: View {
+struct CartoonDetailImageView: View {
   private var image: UIImage
   
   init(image: UIImage) {

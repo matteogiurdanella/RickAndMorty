@@ -29,9 +29,9 @@ struct CartoonCharacterDetailView: View {
           }
         } else if let character = viewModel.character {
           if let image = viewModel.postImage {
-            CartoonDetailImage(image: image)
+            CartoonDetailImageView(image: image)
           } else if viewModel.isImageLoading {
-            PhotoLoading()
+            PhotoLoadingView()
           }
           CartoonCharacterDetailsInfoView(character: character)
         }

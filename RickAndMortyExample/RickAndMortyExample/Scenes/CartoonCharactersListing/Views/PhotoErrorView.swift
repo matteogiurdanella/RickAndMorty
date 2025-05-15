@@ -1,5 +1,5 @@
 //
-//  PhotoError.swift
+//  PhotoErrorView.swift
 //  RickAndMortyExample
 //
 //  Created by matteo giurdanella on 08.05.25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PhotoError: View {
+struct PhotoErrorView: View {
   var retryLoading: (() -> Void)? = nil
   
   var body: some View {
