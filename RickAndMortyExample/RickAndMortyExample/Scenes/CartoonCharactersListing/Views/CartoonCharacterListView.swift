@@ -37,7 +37,7 @@ struct CartoonCharacterListView: View {
             }
           }
           .listStyle(PlainListStyle())
-          .searchable(text: $viewModel.searchText, prompt: "Search")
+          .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search")
           .refreshable {
             await viewModel.fetchCartoonCharacters()
           }
@@ -50,39 +50,5 @@ struct CartoonCharacterListView: View {
         }
       }
     }
-  }
-}
-
-#Preview {
-  let mockCharacters: [CartoonCharacter] = [
-    CartoonCharacter.previewMock(id: 1),
-    CartoonCharacter.previewMock(id: 2)
-  ]
-  
-  let mockViewModel = CartoonCharacterListViewModel(
-    charactersService: MockCartoonCharacterService(characters: mockCharacters)
-  )
-  mockViewModel.characters = mockCharacters
-  mockViewModel.isLoading = false
-  
-  return CartoonCharacterListView(viewModel: mockViewModel)
-}
-
-class MockCartoonCharacterService: CartoonCharacterServiceProtocol {
-  private let mockCharacters: [CartoonCharacter]
-
-  init(characters: [CartoonCharacter]) {
-    self.mockCharacters = characters
-  }
-  
-  func fetchCharacters(id: Int) async throws -> CartoonCharacter {
-    mockCharacters.filter { $0.id == id }.first!
-  }
-
-  func fetchCharacters() async throws -> CartoonCharacterListPageModel {
-    .init(
-      info: .init(count: 0, pages: 0, next: nil, prev: nil),
-      results: mockCharacters
-    )
   }
 }
