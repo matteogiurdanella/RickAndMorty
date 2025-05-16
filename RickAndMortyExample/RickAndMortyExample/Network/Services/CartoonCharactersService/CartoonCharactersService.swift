@@ -8,8 +8,14 @@
 import Foundation
 
 protocol CartoonCharacterServiceProtocol {
-  func fetchCharacters() async throws -> CartoonCharacterListPageModel
-  func fetchCharacters(id: Int) async throws -> CartoonCharacter
+  func fetchCharacters(page: Int) async throws -> CartoonCharacterListPageModel
+  func fetchCharacter(by id: Int) async throws -> CartoonCharacter
+}
+
+extension CartoonCharacterServiceProtocol {
+  func fetchCharacters(page: Int = 1) async throws -> CartoonCharacterListPageModel {
+    try await fetchCharacters(page: page)
+  }
 }
 
 final class CartoonCharacterService: CartoonCharacterServiceProtocol {
@@ -17,17 +23,17 @@ final class CartoonCharacterService: CartoonCharacterServiceProtocol {
   
   init(
     networkService: NetworkServiceProtocol = NetworkService(
-      baseURL: "https://rickandmortyapi.com/api/"
+      baseURL: "https://rickandmortyapi.com/api"
     )
   ) {
     self.networkService = networkService
   }
   
-  func fetchCharacters() async throws -> CartoonCharacterListPageModel {
-    return try await networkService.fetch(from: "character")
+  func fetchCharacters(page: Int = 1) async throws -> CartoonCharacterListPageModel {
+    return try await networkService.fetch(from: "character", queryItems: ["page": "\(page)"])
   }
   
-  func fetchCharacters(id: Int) async throws -> CartoonCharacter {
-    return try await networkService.fetch(from: "character/\(id)")
+  func fetchCharacter(by id: Int) async throws -> CartoonCharacter {
+    return try await networkService.fetch(from: "character/\(id)", queryItems: [:])
   }
 }

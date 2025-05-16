@@ -36,7 +36,7 @@ class CartoonCharacterDetailViewModel: ObservableObject {
     errorMessage = nil
     
     do {
-      character = try await cartoonCharacterService.fetchCharacters(id: id)
+      character = try await cartoonCharacterService.fetchCharacter(by: id)
       
       // Once we have the post, load its image
       if let character {

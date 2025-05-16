@@ -17,9 +17,7 @@ struct CartoonCharacterListView: View {
   var body: some View {
     NavigationView {
       ZStack {
-        if viewModel.isLoading {
-          LoadingView()
-        } else if let errorMessage = viewModel.errorMessage {
+        if let errorMessage = viewModel.errorMessage {
           ErrorView(errorMessage) {
             Task {
               await viewModel.fetchCartoonCharacters()
@@ -34,6 +32,11 @@ struct CartoonCharacterListView: View {
               ).view
             ) {
               CartoonCharacterCell(character: character)
+                .onAppear {
+                  Task {
+                    await viewModel.fetchMoreCharactersIfNeeded(character)
+                  }
+                }
             }
           }
           .listStyle(PlainListStyle())
@@ -41,6 +44,10 @@ struct CartoonCharacterListView: View {
           .refreshable {
             await viewModel.fetchCartoonCharacters()
           }
+        }
+        
+        if viewModel.isLoading {
+          LoadingView()
         }
       }
       .navigationTitle("Characters")
