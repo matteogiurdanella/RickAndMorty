@@ -20,7 +20,7 @@ extension Localizing {
   }
 }
 
-class Localizer: Localizing {
+final class Localizer: Localizing {
   static let shared: Localizing = Localizer()
   
   private init() {}

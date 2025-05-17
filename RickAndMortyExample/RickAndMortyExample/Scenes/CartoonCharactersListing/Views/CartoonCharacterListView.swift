@@ -13,7 +13,7 @@ struct CartoonCharacterListView: View {
   init(viewModel: CartoonCharacterListViewModel) {
     self.viewModel = viewModel
   }
-  
+
   var body: some View {
     NavigationView {
       ZStack {
@@ -28,7 +28,7 @@ struct CartoonCharacterListView: View {
             NavigationLink(
               destination: CartoonCharacterDetailBuilder(
                 characterId: character.id,
-                cartoonCharacterService: .init()
+                cartoonCharacterService: CartoonCharacterService()
               ).view
             ) {
               CartoonCharacterCell(character: character)
@@ -40,7 +40,11 @@ struct CartoonCharacterListView: View {
             }
           }
           .listStyle(PlainListStyle())
-          .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search")
+          .searchable(
+            text: $viewModel.searchText,
+            placement: .navigationBarDrawer(displayMode: .always),
+            prompt: localizer.localize(key: .search, fallbackValue: .search)
+          )
           .refreshable {
             await viewModel.fetchCartoonCharactersOnRefresh()
           }
@@ -50,7 +54,7 @@ struct CartoonCharacterListView: View {
           LoadingView()
         }
       }
-      .navigationTitle("Characters")
+      .navigationTitle(localizer.localize(key: .characters, fallbackValue: .characters))
       .task {
         await viewModel.fetchCartoonCharactersOnAppear()
       }

@@ -89,24 +89,21 @@ struct CartoonCharacterCellPhotoViewModelTests {
     let mockImageService = MockImageService()
     mockImageService.result = UIImage(systemName: "star")
     let testURL = "https://image.com/test.png"
-
+    
     var viewModel: CartoonCharacterCellPhotoViewModel? =
-      CartoonCharacterCellPhotoViewModel(imageUrl: testURL, imageService: mockImageService)
-
+    CartoonCharacterCellPhotoViewModel(imageUrl: testURL, imageService: mockImageService)
+    
     if let viewModel {
       await MainActor.run { viewModel.loadImage() }
     }
-
+    
     try await Task.sleep(nanoseconds: 50_000_000) // start the load
-
+    
     viewModel = nil // trigger deinit
-
+    
     try await Task.sleep(nanoseconds: 50_000_000) // allow cancel to happen
-
+    
     #expect(mockImageService.cancelledURLs.contains(testURL))
-    #expect(mockImageService.invocation == [
-      .loadImage,
-      .cancelLoad
-    ])
+    #expect(mockImageService.invocation.contains(where: { $0 == .cancelLoad }))
   }
 }

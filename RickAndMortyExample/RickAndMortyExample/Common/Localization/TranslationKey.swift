@@ -24,6 +24,8 @@ enum TranslationKey: String {
   case loadDetail = "load_detail_key"
   case loadImageFailed = "load_image_failed_key"
   case retryImage = "retry_image_key"
+  case search = "search_key"
+  case characters = "characters_key"
 }
 
 enum FallbackValue: String {
@@ -45,4 +47,6 @@ enum FallbackValue: String {
   case loadDetail = "Click to load Detail Page"
   case loadImageFailed = "Failed to load the image"
   case retryImage = "Tap to retry downlaodin the image"
+  case search = "Search"
+  case characters = "Characters"
 }

@@ -14,7 +14,7 @@ import SwiftUI
 final class CartoonCharacterDetailSnapshotTests: XCTestCase {
   private let character: CartoonCharacter = .mock(id: 1, name: "Rick_Sanchez")
   private let viewModel: CartoonCharacterDetailViewModel = .init(
-    cartoonCharacterService: .mock(),
+    cartoonCharacterService: CartoonCharacterService.mock(),
     imageService: MockImageService()
   )
   private lazy var view: some View = CartoonCharacterDetailView(
