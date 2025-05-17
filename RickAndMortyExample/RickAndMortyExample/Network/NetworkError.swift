@@ -16,11 +16,11 @@ enum NetworkError: Error {
   var errorDescription: String {
     switch self {
     case .invalidURL: 
-        return "Invalid URL"
+      return localizer.localize(key: .invalidURL, fallbackValue: .invalidURL)
     case .invalidResponse:
-      return "Invalid response from server"
+      return localizer.localize(key: .invalidResponse, fallbackValue: .invalidResponse)
     case .invalidData:
-      return "Invalid data received"
+      return localizer.localize(key: .invalidData, fallbackValue: .invalidData)
     case let .unknown(error):
       return error.localizedDescription
     }

@@ -18,13 +18,13 @@ struct ErrorView: View {
   
   var body: some View {
     VStack {
-      Text("Error")
+      Text(localizer.localize(key: .error, fallbackValue: .error))
         .font(.title)
         .foregroundColor(.red)
       Text(message)
         .foregroundColor(.secondary)
       if tryAgain != nil {
-        Button("Try Again") {
+        Button(localizer.localize(key: .tryAgain, fallbackValue: .tryAgain)) {
           tryAgain?()
         }
         .padding()
