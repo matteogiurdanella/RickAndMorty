@@ -21,5 +21,6 @@ struct CartoonDetailImageView: View {
       .frame(height: 300)
       .clipped()
       .cornerRadius(8)
+      .accessibilityHidden(true)
   }
 }

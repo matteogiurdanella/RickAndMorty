@@ -13,6 +13,7 @@ struct LoadingView: View {
       .scaleEffect(1.5)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .padding()
+      .accessibilityLabel(localizer.localize(key: .loading, fallbackValue: .loading))
   }
 }
 

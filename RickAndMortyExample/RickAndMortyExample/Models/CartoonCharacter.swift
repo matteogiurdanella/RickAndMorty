@@ -38,4 +38,15 @@ struct CartoonCharacter: Decodable, Identifiable {
   let episode: [String]
   let url: String
   let created: String
+  
+  var accessibilityDescription: String {
+    """
+    \(localizer.localize(key: .name, fallbackValue: .name)): \(name). \
+    \(localizer.localize(key: .status, fallbackValue: .status)): \(status.rawValue). \
+    \(localizer.localize(key: .species, fallbackValue: .species)): \(species). \
+    \(localizer.localize(key: .gender, fallbackValue: .gender)): \(gender). \
+    \(localizer.localize(key: .origin, fallbackValue: .origin)): \(origin.name). \
+    \(localizer.localize(key: .location, fallbackValue: .location)): \(location.name).
+    """
+  }
 }
