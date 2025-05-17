@@ -21,8 +21,11 @@ struct ErrorView: View {
       Text(localizer.localize(key: .error, fallbackValue: .error))
         .font(.title)
         .foregroundColor(.red)
+        .accessibilityAddTraits(.isHeader)
       Text(message)
         .foregroundColor(.secondary)
+        .accessibilityLabel("Error Message")
+        .accessibilityLabel(message)
       if tryAgain != nil {
         Button(localizer.localize(key: .tryAgain, fallbackValue: .tryAgain)) {
           tryAgain?()
@@ -32,8 +35,11 @@ struct ErrorView: View {
         .foregroundColor(.white)
         .cornerRadius(8)
         .padding(.top)
+        .accessibilityHint("Attempts to reload")
       }
     }
     .padding()
+    .accessibilityElement(children: .combine)
+    .accessibilityLabel("An error occurred. \(message)")
   }
 }

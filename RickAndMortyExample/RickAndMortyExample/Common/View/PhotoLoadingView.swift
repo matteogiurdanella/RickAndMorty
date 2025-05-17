@@ -16,5 +16,7 @@ struct PhotoLoadingView: View {
           .font(.system(size: 30))
           .foregroundColor(.gray)
       )
+      .accessibilityHidden(true)
+
   }
 }
