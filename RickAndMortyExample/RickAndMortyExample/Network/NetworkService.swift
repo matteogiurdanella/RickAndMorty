@@ -5,20 +5,13 @@
 //  Created by matteo giurdanella on 07.05.25.
 //
 
-/**
- What would I have improved here?
- The URLSession could be extracted as dependency.
- Doing so this class would be easily testable.
- This wasn't done since the implementatino is pretty straight forward but in case of complex implementation I would advice to do so.
- */
-
 import Foundation
 
 protocol NetworkServiceProtocol {
   func fetch<T: Decodable>(
     from endpoint: String,
     queryItems: [String: String]
-  ) async throws -> T
+  ) async -> Result<T, Error>
 }
 
 final class NetworkService: NetworkServiceProtocol {
@@ -28,32 +21,38 @@ final class NetworkService: NetworkServiceProtocol {
     self.baseURL = baseURL
   }
   
-  func fetch<T: Decodable>(from endpoint: String, queryItems: [String: String] = [:]) async throws -> T {
+  func fetch<T: Decodable>(
+    from endpoint: String,
+    queryItems: [String: String]
+  ) async -> Result<T, Error> {
     var urlComponent = URLComponents(string: "\(baseURL)/\(endpoint)")
     urlComponent?.queryItems = queryItems.map { (key, value) in
       URLQueryItem(name: key, value: value)
     }
     guard let url = urlComponent?.url else {
-      throw NetworkError.invalidURL
+      return .failure(NetworkError.invalidURL)
     }
     let urlRequest = URLRequest(url: url)
     
     do {
       let (data, response) = try await URLSession.shared.data(for: urlRequest)
-      
-      guard let httpResponse = response as? HTTPURLResponse,
-            (200...299).contains(httpResponse.statusCode) else {
-        throw NetworkError.invalidResponse
+      guard
+        let httpResponse = response as? HTTPURLResponse,
+        (200...299).contains(httpResponse.statusCode)
+      else {
+        return .failure(NetworkError.invalidResponse)
       }
+      
       do {
-        return try JSONDecoder().decode(T.self, from: data)
+        let model = try JSONDecoder().decode(T.self, from: data)
+        return .success(model)
       } catch {
-        throw NetworkError.invalidData
+        return .failure(NetworkError.invalidData)
       }
     } catch let error as NetworkError {
-      throw error
+      return .failure(error)
     } catch {
-      throw NetworkError.unknown(error)
+      return .failure(NetworkError.unknown(error))
     }
   }
 }

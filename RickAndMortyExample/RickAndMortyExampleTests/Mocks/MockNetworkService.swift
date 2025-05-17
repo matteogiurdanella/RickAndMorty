@@ -27,20 +27,22 @@ final class MockNetworkService: NetworkServiceProtocol {
   var throwError: Error?
   var responseType: ResponseType?
   
-  func fetch<T>(from endpoint: String, queryItems: [String : String]) async throws -> T where T : Decodable {
+  func fetch<T>(from endpoint: String, queryItems: [String : String]) async -> Result<T, Error> where T : Decodable {
     invocation.append(.fetch(endpoint: endpoint, queryItems: queryItems))
     
     if throwError != nil {
       invocation.append(.error(throwError))
-      throw throwError!
+      return .failure(throwError!)
     } else {
       switch responseType {
       case .characterList:
-        return try mockFileResponseDecoder.mockResponse(fromJSONFile: .charactersList)
+        let result: Result<T, Error> = mockFileResponseDecoder.mockResponse(fromJSONFile: .charactersList)
+        return result
       case .characterDetail:
-        return try mockFileResponseDecoder.mockResponse(fromJSONFile: .characterDetail)
-      default:
-        return try JSONDecoder().decode(T.self, from: Data())
+        let result: Result<T, Error> = mockFileResponseDecoder.mockResponse(fromJSONFile: .characterDetail)
+        return result
+      case .none:
+        return .failure(NSError(domain: "Expected Decode Value", code: 1000, userInfo: nil))
       }
     }
   }

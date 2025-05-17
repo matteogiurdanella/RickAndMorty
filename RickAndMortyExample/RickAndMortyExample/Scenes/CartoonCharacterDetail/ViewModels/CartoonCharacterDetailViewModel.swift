@@ -11,9 +11,9 @@ import Combine
 
 class CartoonCharacterDetailViewModel: ObservableObject {
   @Published var character: CartoonCharacter?
-  @Published var isLoading = false
+  @Published var isLoading = true
   @Published var errorMessage: String?
-  
+//  
   // Image-related properties
   @Published var postImage: UIImage?
   @Published var isImageLoading = false
@@ -36,16 +36,14 @@ class CartoonCharacterDetailViewModel: ObservableObject {
     errorMessage = nil
     
     do {
-      character = try await cartoonCharacterService.fetchCharacter(by: id)
-      
-      // Once we have the post, load its image
-      if let character {
-        await loadCharacterImage(from: character.image)
+      let result = await cartoonCharacterService.fetchCharacter(by: id)
+      switch result {
+      case let .success(model):
+        character = model
+        await loadCharacterImage(from: model.image)
+      case let .failure(error):
+        errorMessage = (error as? NetworkError)?.errorDescription ?? error.localizedDescription
       }
-    } catch let error as NetworkError {
-      errorMessage = error.errorDescription
-    } catch {
-      errorMessage = error.localizedDescription
     }
     
     isLoading = false
@@ -69,6 +67,6 @@ class CartoonCharacterDetailViewModel: ObservableObject {
   }
   
   deinit {
-    loadImageTask?.cancel()
+//    loadImageTask?.cancel()
   }
 }
