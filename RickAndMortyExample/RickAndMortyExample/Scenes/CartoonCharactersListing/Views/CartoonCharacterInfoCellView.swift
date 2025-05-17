@@ -28,5 +28,8 @@ struct CartoonCharacterInfoCellView: View {
         .foregroundColor(.secondary.opacity(0.7))
         .lineLimit(1)
     }
+    .padding()
+    .accessibilityElement()
+    .accessibilityLabel(character.accessibilityDescription)
   }
 }

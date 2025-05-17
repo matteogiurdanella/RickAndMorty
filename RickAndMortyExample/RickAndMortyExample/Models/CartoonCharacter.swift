@@ -38,4 +38,15 @@ struct CartoonCharacter: Decodable, Identifiable {
   let episode: [String]
   let url: String
   let created: String
+  
+  var accessibilityDescription: String {
+    """
+    Name: \(name). \
+    Status: \(status.rawValue). \
+    Species: \(species). \
+    Gender: \(gender). \
+    Origin: \(origin.name). \
+    Last known location: \(location.name).
+    """
+  }
 }

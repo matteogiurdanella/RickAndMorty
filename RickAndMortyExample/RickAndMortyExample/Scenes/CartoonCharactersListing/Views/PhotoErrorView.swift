@@ -21,5 +21,9 @@ struct PhotoErrorView: View {
       .onTapGesture {
         retryLoading?()
       }
+      .accessibilityElement()
+      .accessibilityLabel("Failed to load the image")
+      .accessibilityAddTraits(.isButton)
+      .accessibilityHint("Tap to retry downlaodin the image")
   }
 }

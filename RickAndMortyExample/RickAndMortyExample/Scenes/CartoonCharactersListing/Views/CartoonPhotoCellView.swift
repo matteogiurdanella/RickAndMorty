@@ -22,6 +22,7 @@ struct CartoonPhotoCellView: View {
         Image(uiImage: image)
           .resizable()
           .aspectRatio(contentMode: .fill)
+          .accessibilityHidden(true)
       } else if viewModel.loadFailed {
         PhotoErrorView {
           viewModel.retryLoading()
@@ -33,5 +34,7 @@ struct CartoonPhotoCellView: View {
     .onAppear() {
       viewModel.loadImage()
     }
+    .accessibilityAddTraits(.isButton)
+    .accessibilityHint("Click to load Detail Page")
   }
 }

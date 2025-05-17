@@ -17,6 +17,5 @@ struct PhotoLoadingView: View {
           .foregroundColor(.gray)
       )
       .accessibilityHidden(true)
-
   }
 }
