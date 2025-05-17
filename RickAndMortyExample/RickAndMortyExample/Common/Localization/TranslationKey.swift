@@ -11,6 +11,11 @@ enum TranslationKey: String {
   case invalidURL = "invalid_url_key"
   case invalidResponse = "invalid_response_key"
   case invalidData = "invalid_data_key"
+  case status = "status_key"
+  case species = "species_key"
+  case gender = "gender_key"
+  case origin = "origin_key"
+  case location = "location_key"
 }
 
 enum FallbackValue: String {
@@ -19,4 +24,9 @@ enum FallbackValue: String {
   case invalidURL = "Invalid URL"
   case invalidResponse = "Invalid response from server"
   case invalidData = "Invalid data received"
+  case status = "Status"
+  case species = "Species"
+  case gender = "Gender"
+  case origin = "Origin"
+  case location = "Last Known Location"
 }

@@ -19,19 +19,29 @@ struct CartoonCharacterDetailsInfoView: View {
       .font(.title)
       .fontWeight(.bold)
       .padding(.bottom, 8)
-    Text("Status: \(character.status.rawValue)")
-      .font(.body)
+    Text(
+      "\(localizer.localize(key: .status, fallbackValue: .status)): \(character.status.rawValue)"
+    )
+    .font(.body)
     Divider()
-    Text("Species: \(character.species)")
-      .font(.body)
+    Text(
+      "\(localizer.localize(key: .species, fallbackValue: .species)): \(character.species)"
+    )
+    .font(.body)
     Divider()
-    Text("Gender: \(character.gender)")
-      .font(.body)
+    Text(
+      "\(localizer.localize(key: .gender, fallbackValue: .gender)): \(character.gender)"
+    )
+    .font(.body)
     Divider()
-    Text("Origin: \(character.origin.name)")
-      .font(.body)
+    Text(
+      "\(localizer.localize(key: .origin, fallbackValue: .origin)): \(character.origin.name)"
+    )
+    .font(.body)
     Divider()
-    Text("Last known locaion: \(character.location.name)")
-      .font(.body)
+    Text(
+      "\(localizer.localize(key: .location, fallbackValue: .location)): \(character.location.name)"
+    )
+    .font(.body)
   }
 }
