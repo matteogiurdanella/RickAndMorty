@@ -81,7 +81,7 @@ private extension CartoonCharacterListViewModel {
       }
     case let .failure(error):
       await MainActor.run {
-        errorMessage = (error as? NetworkError)?.localizedDescription ?? error.localizedDescription
+        errorMessage = (error as? NetworkError)?.errorDescription ?? error.localizedDescription
       }
     }
     

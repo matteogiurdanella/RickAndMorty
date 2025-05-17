@@ -18,14 +18,14 @@ final class CartoonCharacterServiceTests {
     networkService.responseType = .characterList
     
     // When
-    let pageModel = try? await sut.fetchCharacters()
+    let pageModel = try await sut.fetchCharacters().get()
     
     // Then
-    #expect(pageModel?.info.count == 826)
-    #expect(pageModel?.info.pages == 42)
-    #expect(pageModel?.info.next == "https://rickandmortyapi.com/api/character?page=2")
-    #expect(pageModel?.info.prev == nil)
-    #expect(pageModel?.results.count == 20)
+    #expect(pageModel.info.count == 826)
+    #expect(pageModel.info.pages == 42)
+    #expect(pageModel.info.next == "https://rickandmortyapi.com/api/character?page=2")
+    #expect(pageModel.info.prev == nil)
+    #expect(pageModel.results.count == 20)
     #expect(networkService.invocation == [.fetch(endpoint: "character", queryItems: ["page": "1"])])
   }
   
@@ -35,10 +35,10 @@ final class CartoonCharacterServiceTests {
     networkService.responseType = .characterDetail
     
     // When
-    let character = try? await sut.fetchCharacter(by: 1)
+    let character = try await sut.fetchCharacter(by: 1).get()
     
     // Then
-    #expect(character != nil)
+    #expect(character.id == 1)
     #expect(networkService.invocation == [.fetch(endpoint: "character/1", queryItems: [:])])
   }
   
@@ -49,10 +49,15 @@ final class CartoonCharacterServiceTests {
     networkService.throwError = error
     
     // When
-    let character = try? await sut.fetchCharacter(by: 1)
+    let result = await sut.fetchCharacter(by: 1)
     
     // Then
-    #expect(character == nil)
+    switch result {
+    case .success:
+      Issue.record("Expected Failure")
+    case let .failure(callError):
+      #expect((callError as? NetworkError)?.errorDescription == error.errorDescription)
+    }
     #expect(networkService.invocation == [.fetch(endpoint: "character/1", queryItems: [:]), .error(error)])
   }
 }

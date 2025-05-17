@@ -32,7 +32,6 @@ final class NetworkService: NetworkServiceProtocol {
     guard let url = urlComponent?.url else {
       return .failure(NetworkError.invalidURL)
     }
-    print("MG: \(url)")
     let urlRequest = URLRequest(url: url)
     
     do {

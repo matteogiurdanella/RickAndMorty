@@ -42,7 +42,7 @@ class CartoonCharacterDetailViewModel: ObservableObject {
         character = model
         await loadCharacterImage(from: model.image)
       case let .failure(error):
-        errorMessage = (error as? NetworkError)?.localizedDescription ?? error.localizedDescription
+        errorMessage = (error as? NetworkError)?.errorDescription ?? error.localizedDescription
       }
     }
     
