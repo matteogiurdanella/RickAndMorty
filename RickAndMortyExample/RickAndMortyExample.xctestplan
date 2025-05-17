@@ -19,15 +19,16 @@
     {
       "target" : {
         "containerPath" : "container:RickAndMortyExample.xcodeproj",
-        "identifier" : "2C155C782DCB32BA0077180A",
-        "name" : "RickAndMortyExampleUITests"
+        "identifier" : "2C155C6E2DCB32BA0077180A",
+        "name" : "RickAndMortyExampleTests"
       }
     },
     {
+      "parallelizable" : false,
       "target" : {
         "containerPath" : "container:RickAndMortyExample.xcodeproj",
-        "identifier" : "2C155C6E2DCB32BA0077180A",
-        "name" : "RickAndMortyExampleTests"
+        "identifier" : "2C8180112DD88B120060B55C",
+        "name" : "RickAndMortyExampleSnapshotTests"
       }
     }
   ],
