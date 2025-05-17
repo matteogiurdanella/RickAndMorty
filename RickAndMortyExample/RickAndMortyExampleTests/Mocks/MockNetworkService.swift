@@ -10,7 +10,10 @@ import Foundation
 
 final class MockNetworkService: NetworkServiceProtocol {
   enum Invocation {
-    case fetch(endpoint: String)
+    case fetch(
+      endpoint: String,
+      queryItems: [String: String]
+    )
     case error(Error?)
   }
   
@@ -24,8 +27,8 @@ final class MockNetworkService: NetworkServiceProtocol {
   var throwError: Error?
   var responseType: ResponseType?
   
-  func fetch<T>(from endpoint: String) async throws -> T where T : Decodable {
-    invocation.append(.fetch(endpoint: endpoint))
+  func fetch<T>(from endpoint: String, queryItems: [String : String]) async throws -> T where T : Decodable {
+    invocation.append(.fetch(endpoint: endpoint, queryItems: queryItems))
     
     if throwError != nil {
       invocation.append(.error(throwError))
@@ -47,8 +50,8 @@ final class MockNetworkService: NetworkServiceProtocol {
 extension MockNetworkService.Invocation: Equatable {
   static func == (lhs: MockNetworkService.Invocation, rhs: MockNetworkService.Invocation) -> Bool {
     switch (lhs, rhs) {
-    case (let .fetch(leftEndpoint), let .fetch(rightEndpoint)):
-      return leftEndpoint == rightEndpoint
+    case (let .fetch(leftEndpoint, leftQueryItems), let .fetch(rightEndpoint, rightQueryItems)):
+      return leftEndpoint == rightEndpoint && leftQueryItems == rightQueryItems
     case (let .error(leftError), let .error(rightError)):
       switch (leftError, rightError) {
       case (nil, nil):

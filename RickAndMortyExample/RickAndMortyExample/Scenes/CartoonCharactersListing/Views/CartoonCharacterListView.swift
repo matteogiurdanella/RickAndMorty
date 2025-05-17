@@ -20,7 +20,7 @@ struct CartoonCharacterListView: View {
         if let errorMessage = viewModel.errorMessage {
           ErrorView(errorMessage) {
             Task {
-              await viewModel.fetchCartoonCharacters()
+              await viewModel.fetchCartoonCharactersOnRetry()
             }
           }
         } else {
@@ -42,7 +42,7 @@ struct CartoonCharacterListView: View {
           .listStyle(PlainListStyle())
           .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search")
           .refreshable {
-            await viewModel.fetchCartoonCharacters()
+            await viewModel.fetchCartoonCharactersOnRefresh()
           }
         }
         
@@ -53,7 +53,7 @@ struct CartoonCharacterListView: View {
       .navigationTitle("Characters")
       .onAppear {
         Task {
-          await viewModel.fetchCartoonCharacters()
+          await viewModel.fetchCartoonCharactersOnAppear()
         }
       }
     }

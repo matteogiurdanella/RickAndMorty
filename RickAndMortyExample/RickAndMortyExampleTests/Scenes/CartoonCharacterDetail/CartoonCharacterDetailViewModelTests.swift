@@ -37,7 +37,9 @@ struct CartoonCharacterDetailViewModelTests {
     #expect(viewModel.errorMessage == nil)
     #expect(viewModel.postImage != nil)
     #expect(viewModel.isImageLoading == false)
-    #expect(mockNetworkService.invocation == [.fetch(endpoint: "character/1")])
+    #expect(
+      mockNetworkService.invocation == [.fetch(endpoint: "character/1", queryItems: [:])]
+    )
   }
   
   @Test
@@ -60,7 +62,7 @@ struct CartoonCharacterDetailViewModelTests {
     #expect(viewModel.isLoading == false)
     #expect(viewModel.errorMessage == NetworkError.invalidURL.errorDescription)
     #expect(mockNetworkService.invocation == [
-      .fetch(endpoint: "character/2"),
+      .fetch(endpoint: "character/2", queryItems: [:]),
       .error(NetworkError.invalidURL)
     ])
   }
@@ -87,7 +89,7 @@ struct CartoonCharacterDetailViewModelTests {
     #expect(viewModel.isLoading == false)
     #expect(viewModel.errorMessage != nil)
     #expect(mockNetworkService.invocation == [
-      .fetch(endpoint: "character/3"),
+      .fetch(endpoint: "character/3", queryItems: [:]),
       .error(error)
     ])
   }
