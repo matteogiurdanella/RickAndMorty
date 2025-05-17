@@ -13,21 +13,6 @@ extension XCTestCase {
     assertSnapshot(matching: view, as: .image, testName: testName)
   }
   
-  func assertSnapshotImage(
-    view: UIView,
-    testName: String
-  ) {
-    let failure = verifySnapshot(
-      of: view,
-      as: .image,
-      snapshotDirectory: snapshotDirectory,
-      testName: testName
-    )
-    if let failure {
-      XCTFail(failure.snapshotDescription)
-    }
-  }
-  
   func assertSnapshot<Value, Format>(
     matching value: @autoclosure () throws -> Value,
     as snapshotting: Snapshotting<Value, Format>,
@@ -55,15 +40,6 @@ extension XCTestCase {
 }
 
 private extension XCTestCase {
-  var snapshotDirectory: String? {
-    URL(string: #file)?
-      .deletingLastPathComponent()
-      .deletingLastPathComponent()
-      .appendingPathComponent(.snapshotRootDirectory)
-      .appendingPathComponent(ProcessInfo.processInfo.environment[.folderNameKey] ?? "")
-      .absoluteString
-  }
-  
   private func snapshotDirectory(for file: StaticString, ciScriptsPathComponent: String = "ci_scripts") -> String {
     guard let productName = ProcessInfo.processInfo.environment["XCTestBundlePath"]?
       .components(separatedBy: "/").last?
@@ -91,9 +67,4 @@ private extension XCTestCase {
     return pathsComponents.joined(separator: "/")
   }
 
-}
-
-private extension String {
-  static let snapshotRootDirectory = "Snapshots"
-  static let folderNameKey = "FOLDER_NAME"
 }

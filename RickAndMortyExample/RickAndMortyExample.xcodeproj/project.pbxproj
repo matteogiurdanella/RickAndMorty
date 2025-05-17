@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C041CCF2DD8A79200F55D1B /* RickAndMortyExmapleLocal.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 2C041CCE2DD8A79200F55D1B /* RickAndMortyExmapleLocal.xctestplan */; };
 		2C81801D2DD88B360060B55C /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 2C81801C2DD88B360060B55C /* SnapshotTesting */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C041CCE2DD8A79200F55D1B /* RickAndMortyExmapleLocal.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = RickAndMortyExmapleLocal.xctestplan; sourceTree = "<group>"; };
 		2C155C612DCB32B90077180A /* RickAndMortyExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RickAndMortyExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C155C6F2DCB32BA0077180A /* RickAndMortyExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RickAndMortyExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C685C3E2DD791EE00668E53 /* RickAndMortyExample.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = RickAndMortyExample.xctestplan; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				2C685C3E2DD791EE00668E53 /* RickAndMortyExample.xctestplan */,
+				2C041CCE2DD8A79200F55D1B /* RickAndMortyExmapleLocal.xctestplan */,
 				2C155C632DCB32B90077180A /* RickAndMortyExample */,
 				2C155C722DCB32BA0077180A /* RickAndMortyExampleTests */,
 				2C8180132DD88B120060B55C /* RickAndMortyExampleSnapshotTests */,
@@ -251,6 +254,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C041CCF2DD8A79200F55D1B /* RickAndMortyExmapleLocal.xctestplan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
