@@ -54,7 +54,7 @@ final class MockResponseFileDecoder {
       let error = FileDecodingError("Failed to decode \(file) because it appears to be invalid JSON")
       return .failure(error)
     } catch {
-      let erro = FileDecodingError("Failed to decode \(file) error : \(error.localizedDescription)")
+      let error = FileDecodingError("Failed to decode \(file) error : \(error.localizedDescription)")
       return .failure(error)
     }
   }

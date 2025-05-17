@@ -30,10 +30,26 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:RickAndMortyExample.xctestplan"
+            reference = "container:RickAndMortyExample.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:RickAndMortyExmapleLocal.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
+      <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2C8180112DD88B120060B55C"
+               BuildableName = "RickAndMortyExampleSnapshotTests.xctest"
+               BlueprintName = "RickAndMortyExampleSnapshotTests"
+               ReferencedContainer = "container:RickAndMortyExample.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"

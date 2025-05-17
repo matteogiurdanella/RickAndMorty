@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "420D5361-8870-4813-994B-C46D59571FB8",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:RickAndMortyExample.xcodeproj",
+        "identifier" : "2C8180112DD88B120060B55C",
+        "name" : "RickAndMortyExampleSnapshotTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:RickAndMortyExample.xcodeproj",
+        "identifier" : "2C155C6E2DCB32BA0077180A",
+        "name" : "RickAndMortyExampleTests"
+      }
+    }
+  ],
+  "version" : 1
+}
