@@ -25,6 +25,7 @@ final class CartoonCharacterDetailSnapshotTests: XCTestCase {
   private lazy var uiView: UIView? = UIHostingController(rootView: view).view
   
   func testCharacterDetailErrorMesssage() throws {
+    viewModel.isLoading = false
     viewModel.errorMessage = "Something went wrong"
     let view = try XCTUnwrap(uiView)
     assertSnapshot(of: view, testName: #function)
@@ -37,12 +38,16 @@ final class CartoonCharacterDetailSnapshotTests: XCTestCase {
   }
   
   func testCharacterDetailInfo() throws {
+    viewModel.isLoading = false
+    viewModel.errorMessage = nil
     viewModel.character = character
     let view = try XCTUnwrap(uiView)
     assertSnapshot(of: view, testName: #function)
   }
   
   func testCharacterDetailImageLoading() throws {
+    viewModel.isLoading = false
+    viewModel.errorMessage = nil
     viewModel.character = character
     viewModel.isImageLoading = true
     let view = try XCTUnwrap(uiView)
@@ -50,6 +55,8 @@ final class CartoonCharacterDetailSnapshotTests: XCTestCase {
   }
   
   func testCharacterDetailInfoAndImage() throws {
+    viewModel.isLoading = false
+    viewModel.errorMessage = nil
     viewModel.character = character
     let testBundle = Bundle(for: type(of: self))
     guard let imagePath = testBundle.path(forResource: character.name, ofType: "jpeg") else {
