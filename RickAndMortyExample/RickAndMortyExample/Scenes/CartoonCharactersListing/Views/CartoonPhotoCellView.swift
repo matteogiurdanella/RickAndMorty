@@ -35,6 +35,6 @@ struct CartoonPhotoCellView: View {
       viewModel.loadImage()
     }
     .accessibilityAddTraits(.isButton)
-    .accessibilityHint("Click to load Detail Page")
+    .accessibilityHint(localizer.localize(key: .loadDetail, fallbackValue: .loadDetail))
   }
 }

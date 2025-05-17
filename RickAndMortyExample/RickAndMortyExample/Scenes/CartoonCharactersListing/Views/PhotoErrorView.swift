@@ -22,8 +22,8 @@ struct PhotoErrorView: View {
         retryLoading?()
       }
       .accessibilityElement()
-      .accessibilityLabel("Failed to load the image")
+      .accessibilityLabel(localizer.localize(key: .loadImageFailed, fallbackValue: .loadImageFailed))
       .accessibilityAddTraits(.isButton)
-      .accessibilityHint("Tap to retry downlaodin the image")
+      .accessibilityHint(localizer.localize(key: .retryImage, fallbackValue: .retryImage))
   }
 }
