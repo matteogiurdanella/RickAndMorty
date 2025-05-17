@@ -27,26 +27,26 @@ final class CartoonCharacterDetailSnapshotTests: XCTestCase {
   func testCharacterDetailErrorMesssage() throws {
     viewModel.errorMessage = "Something went wrong"
     let view = try XCTUnwrap(uiView)
-    assertSnapshot(of: view, as: .image)
+    assertSnapshot(of: view, testName: #function)
   }
   
   func testCharacterDetailIsLoading() throws {
     viewModel.isLoading = true
     let view = try XCTUnwrap(uiView)
-    assertSnapshot(of: view, as: .image)
+    assertSnapshot(of: view, testName: #function)
   }
   
   func testCharacterDetailInfo() throws {
     viewModel.character = character
     let view = try XCTUnwrap(uiView)
-    assertSnapshot(of: view, as: .image)
+    assertSnapshot(of: view, testName: #function)
   }
   
   func testCharacterDetailImageLoading() throws {
     viewModel.character = character
     viewModel.isImageLoading = true
     let view = try XCTUnwrap(uiView)
-    assertSnapshot(of: view, as: .image)
+    assertSnapshot(of: view, testName: #function)
   }
   
   func testCharacterDetailInfoAndImage() throws {
@@ -57,6 +57,6 @@ final class CartoonCharacterDetailSnapshotTests: XCTestCase {
     }
     viewModel.postImage = UIImage(contentsOfFile: imagePath)
     let view = try XCTUnwrap(uiView)
-    assertSnapshot(of: view, as: .image)
+    assertSnapshot(of: view, testName: #function)
   }
 }
