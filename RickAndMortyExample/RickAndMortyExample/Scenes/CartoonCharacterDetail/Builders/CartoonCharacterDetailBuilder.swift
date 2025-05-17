@@ -28,6 +28,7 @@ struct CartoonCharacterDetailBuilder: SceneBuilding {
   }
   
   var view: CartoonCharacterDetailView {
-    .init(characterId: characterId, viewModel: viewModel)
+    print("MG: \(characterId)")
+    return .init(characterId: characterId, viewModel: viewModel)
   }
 }

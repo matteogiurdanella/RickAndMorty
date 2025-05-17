@@ -38,10 +38,8 @@ struct CartoonCharacterDetailView: View {
       }
       .padding()
     }
-    .onAppear {
-      Task {
-        await viewModel.fetchCharacter(id: characterId)
-      }
+    .task {
+      await viewModel.fetchCharacter(id: characterId)
     }
   }
 }

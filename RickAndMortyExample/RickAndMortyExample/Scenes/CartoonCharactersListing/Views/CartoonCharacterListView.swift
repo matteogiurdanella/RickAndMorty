@@ -51,10 +51,8 @@ struct CartoonCharacterListView: View {
         }
       }
       .navigationTitle("Characters")
-      .onAppear {
-        Task {
-          await viewModel.fetchCartoonCharactersOnAppear()
-        }
+      .task {
+        await viewModel.fetchCartoonCharactersOnAppear()
       }
     }
   }

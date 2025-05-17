@@ -72,7 +72,7 @@ private extension CartoonCharacterListViewModel {
       self.errorMessage = nil
     }
     
-    let result = await fetchWithResult(page: page ?? currentPage)
+    let result = await charactersService.fetchCharacters(page: page ?? currentPage)
     switch result {
     case let .success(pageModel):
       self.pageModel = pageModel
@@ -81,25 +81,12 @@ private extension CartoonCharacterListViewModel {
       }
     case let .failure(error):
       await MainActor.run {
-        if let error = error as? NetworkError {
-          errorMessage = error.errorDescription
-        } else {
-          errorMessage = error.localizedDescription
-        }
+        errorMessage = (error as? NetworkError)?.localizedDescription ?? error.localizedDescription
       }
     }
     
     await MainActor.run {
       isLoading = false
-    }
-  }
-  
-  func fetchWithResult(page: Int) async -> Result<CartoonCharacterListPageModel, Error>{
-    do {
-      let pageModel = try await charactersService.fetchCharacters(page: page)
-      return .success(pageModel)
-    } catch let error {
-      return .failure(error)
     }
   }
 }

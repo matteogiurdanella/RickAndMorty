@@ -8,13 +8,14 @@
 import Foundation
 
 protocol CartoonCharacterServiceProtocol {
-  func fetchCharacters(page: Int) async throws -> CartoonCharacterListPageModel
-  func fetchCharacter(by id: Int) async throws -> CartoonCharacter
+  func fetchCharacters(page: Int) async -> Result<CartoonCharacterListPageModel, Error>
+  func fetchCharacter(by id: Int) async -> Result<CartoonCharacter, Error>
 }
 
+// TODO: Try to remove this
 extension CartoonCharacterServiceProtocol {
-  func fetchCharacters(page: Int = 1) async throws -> CartoonCharacterListPageModel {
-    try await fetchCharacters(page: page)
+  func fetchCharacters(page: Int = 1) async -> Result<CartoonCharacterListPageModel, Error> {
+    await fetchCharacters(page: page)
   }
 }
 
@@ -29,11 +30,11 @@ final class CartoonCharacterService: CartoonCharacterServiceProtocol {
     self.networkService = networkService
   }
   
-  func fetchCharacters(page: Int = 1) async throws -> CartoonCharacterListPageModel {
-    return try await networkService.fetch(from: "character", queryItems: ["page": "\(page)"])
+  func fetchCharacters(page: Int = 1) async -> Result<CartoonCharacterListPageModel, Error> {
+    return await networkService.fetch(from: "character", queryItems: ["page": "\(page)"])
   }
   
-  func fetchCharacter(by id: Int) async throws -> CartoonCharacter {
-    return try await networkService.fetch(from: "character/\(id)", queryItems: [:])
+  func fetchCharacter(by id: Int) async -> Result<CartoonCharacter, Error> {
+    return await networkService.fetch(from: "character/\(id)", queryItems: [:])
   }
 }

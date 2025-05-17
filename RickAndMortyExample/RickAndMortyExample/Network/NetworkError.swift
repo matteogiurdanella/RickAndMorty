@@ -13,7 +13,7 @@ enum NetworkError: Error {
   case invalidData
   case unknown(Error)
     
-  var errorDescription: String {
+  var localizedDescription: String {
     switch self {
     case .invalidURL: 
         return "Invalid URL"
