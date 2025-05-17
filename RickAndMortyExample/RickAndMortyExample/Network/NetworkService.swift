@@ -15,7 +15,10 @@
 import Foundation
 
 protocol NetworkServiceProtocol {
-  func fetch<T: Decodable>(from endpoint: String) async throws -> T
+  func fetch<T: Decodable>(
+    from endpoint: String,
+    queryItems: [String: String]
+  ) async throws -> T
 }
 
 final class NetworkService: NetworkServiceProtocol {
@@ -25,13 +28,18 @@ final class NetworkService: NetworkServiceProtocol {
     self.baseURL = baseURL
   }
   
-  func fetch<T: Decodable>(from endpoint: String) async throws -> T {
-    guard let url = URL(string: "\(baseURL)/\(endpoint)") else {
+  func fetch<T: Decodable>(from endpoint: String, queryItems: [String: String] = [:]) async throws -> T {
+    var urlComponent = URLComponents(string: "\(baseURL)/\(endpoint)")
+    urlComponent?.queryItems = queryItems.map { (key, value) in
+      URLQueryItem(name: key, value: value)
+    }
+    guard let url = urlComponent?.url else {
       throw NetworkError.invalidURL
     }
+    let urlRequest = URLRequest(url: url)
     
     do {
-      let (data, response) = try await URLSession.shared.data(from: url)
+      let (data, response) = try await URLSession.shared.data(for: urlRequest)
       
       guard let httpResponse = response as? HTTPURLResponse,
             (200...299).contains(httpResponse.statusCode) else {

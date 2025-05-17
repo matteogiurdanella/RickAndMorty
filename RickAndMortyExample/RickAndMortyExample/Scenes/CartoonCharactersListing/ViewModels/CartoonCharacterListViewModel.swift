@@ -11,30 +11,47 @@ import Combine
 final class CartoonCharacterListViewModel: ObservableObject {
   @Published var characters: [CartoonCharacter] = []
   @Published var isLoading = false
-  @Published var errorMessage: String?
+  @Published var errorMessage: String? = nil
   @Published var searchText: String = ""
   
+  private var pageModel: CartoonCharacterListPageModel?
   private let charactersService: CartoonCharacterServiceProtocol
+  private var currentPage = 1
+  private var isFirstLoad: Bool = true
+  var nextPage: Int {
+    currentPage = currentPage + 1
+    return currentPage
+  }
   
   init(charactersService: CartoonCharacterServiceProtocol = CartoonCharacterService()) {
     self.charactersService = charactersService
   }
   
-  @MainActor
-  func fetchCartoonCharacters() async {
-    isLoading = true
-    errorMessage = nil
-    
-    do {
-      let pageModel = try await charactersService.fetchCharacters()
-      characters = pageModel.results
-    } catch let error as NetworkError {
-      errorMessage = error.errorDescription
-    } catch {
-      errorMessage = error.localizedDescription
+  func fetchCartoonCharactersOnAppear() async {
+    guard isFirstLoad else { return }
+    isFirstLoad = false
+    await fetchCartoonCharacters(page: currentPage)
+  }
+  
+  func fetchMoreCharactersIfNeeded(_ character: CartoonCharacter) async {
+    if
+      let index = characters.firstIndex(where: { $0.id == character.id }),
+      index == characters.count - 5 {
+        await fetchCartoonCharacters(page: nextPage)
     }
-    
-    isLoading = false
+  }
+  
+  func fetchCartoonCharactersOnRetry() async {
+    await fetchCartoonCharactersOnRefresh()
+  }
+  
+  func fetchCartoonCharactersOnRefresh() async {
+    await MainActor.run {
+      characters = []
+    }
+    pageModel = nil
+    currentPage = 1
+    await fetchCartoonCharacters(page: currentPage)
   }
   
   var filteredCharacters: [CartoonCharacter] {
@@ -43,12 +60,46 @@ final class CartoonCharacterListViewModel: ObservableObject {
     return characters.filter { character in
       character.name.localizedCaseInsensitiveContains(searchText) ||
       character.status.rawValue.localizedCaseInsensitiveContains(searchText) ||
-      character.species.localizedCaseInsensitiveContains(searchText) ||
-      character.type.localizedCaseInsensitiveContains(searchText) ||
-      character.gender.rawValue.localizedCaseInsensitiveContains(searchText) ||
-      character.origin.name.localizedCaseInsensitiveContains(searchText) ||
-      character.location.name.localizedCaseInsensitiveContains(searchText)
+      character.species.localizedCaseInsensitiveContains(searchText)
     }
   }
 }
 
+private extension CartoonCharacterListViewModel {
+  func fetchCartoonCharacters(page: Int? = nil) async {
+    await MainActor.run {
+      isLoading = true
+      self.errorMessage = nil
+    }
+    
+    let result = await fetchWithResult(page: page ?? currentPage)
+    switch result {
+    case let .success(pageModel):
+      self.pageModel = pageModel
+      await MainActor.run {
+        characters.append(contentsOf: pageModel.results)
+      }
+    case let .failure(error):
+      await MainActor.run {
+        if let error = error as? NetworkError {
+          errorMessage = error.errorDescription
+        } else {
+          errorMessage = error.localizedDescription
+        }
+      }
+    }
+    
+    await MainActor.run {
+      isLoading = false
+    }
+  }
+  
+  func fetchWithResult(page: Int) async -> Result<CartoonCharacterListPageModel, Error>{
+    do {
+      let pageModel = try await charactersService.fetchCharacters(page: page)
+      return .success(pageModel)
+    } catch let error {
+      return .failure(error)
+    }
+  }
+}

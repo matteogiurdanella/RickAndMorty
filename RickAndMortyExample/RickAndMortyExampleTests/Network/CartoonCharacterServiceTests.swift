@@ -26,7 +26,7 @@ final class CartoonCharacterServiceTests {
     #expect(pageModel?.info.next == "https://rickandmortyapi.com/api/character?page=2")
     #expect(pageModel?.info.prev == nil)
     #expect(pageModel?.results.count == 20)
-    #expect(networkService.invocation == [.fetch(endpoint: "character")])
+    #expect(networkService.invocation == [.fetch(endpoint: "character", queryItems: ["page": "1"])])
   }
   
   @Test
@@ -35,11 +35,11 @@ final class CartoonCharacterServiceTests {
     networkService.responseType = .characterDetail
     
     // When
-    let character = try? await sut.fetchCharacters(id: 1)
+    let character = try? await sut.fetchCharacter(by: 1)
     
     // Then
     #expect(character != nil)
-    #expect(networkService.invocation == [.fetch(endpoint: "character/1")])
+    #expect(networkService.invocation == [.fetch(endpoint: "character/1", queryItems: [:])])
   }
   
   @Test
@@ -49,10 +49,10 @@ final class CartoonCharacterServiceTests {
     networkService.throwError = error
     
     // When
-    let character = try? await sut.fetchCharacters(id: 1)
+    let character = try? await sut.fetchCharacter(by: 1)
     
     // Then
     #expect(character == nil)
-    #expect(networkService.invocation == [.fetch(endpoint: "character/1"), .error(error)])
+    #expect(networkService.invocation == [.fetch(endpoint: "character/1", queryItems: [:]), .error(error)])
   }
 }

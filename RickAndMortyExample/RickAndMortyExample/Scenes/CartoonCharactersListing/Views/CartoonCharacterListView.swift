@@ -17,12 +17,10 @@ struct CartoonCharacterListView: View {
   var body: some View {
     NavigationView {
       ZStack {
-        if viewModel.isLoading {
-          LoadingView()
-        } else if let errorMessage = viewModel.errorMessage {
+        if let errorMessage = viewModel.errorMessage {
           ErrorView(errorMessage) {
             Task {
-              await viewModel.fetchCartoonCharacters()
+              await viewModel.fetchCartoonCharactersOnRetry()
             }
           }
         } else {
@@ -34,55 +32,30 @@ struct CartoonCharacterListView: View {
               ).view
             ) {
               CartoonCharacterCell(character: character)
+                .onAppear {
+                  Task {
+                    await viewModel.fetchMoreCharactersIfNeeded(character)
+                  }
+                }
             }
           }
           .listStyle(PlainListStyle())
-          .searchable(text: $viewModel.searchText, prompt: "Search")
+          .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search")
           .refreshable {
-            await viewModel.fetchCartoonCharacters()
+            await viewModel.fetchCartoonCharactersOnRefresh()
           }
+        }
+        
+        if viewModel.isLoading {
+          LoadingView()
         }
       }
       .navigationTitle("Characters")
       .onAppear {
         Task {
-          await viewModel.fetchCartoonCharacters()
+          await viewModel.fetchCartoonCharactersOnAppear()
         }
       }
     }
-  }
-}
-
-#Preview {
-  let mockCharacters: [CartoonCharacter] = [
-    CartoonCharacter.previewMock(id: 1),
-    CartoonCharacter.previewMock(id: 2)
-  ]
-  
-  let mockViewModel = CartoonCharacterListViewModel(
-    charactersService: MockCartoonCharacterService(characters: mockCharacters)
-  )
-  mockViewModel.characters = mockCharacters
-  mockViewModel.isLoading = false
-  
-  return CartoonCharacterListView(viewModel: mockViewModel)
-}
-
-class MockCartoonCharacterService: CartoonCharacterServiceProtocol {
-  private let mockCharacters: [CartoonCharacter]
-
-  init(characters: [CartoonCharacter]) {
-    self.mockCharacters = characters
-  }
-  
-  func fetchCharacters(id: Int) async throws -> CartoonCharacter {
-    mockCharacters.filter { $0.id == id }.first!
-  }
-
-  func fetchCharacters() async throws -> CartoonCharacterListPageModel {
-    .init(
-      info: .init(count: 0, pages: 0, next: nil, prev: nil),
-      results: mockCharacters
-    )
   }
 }
