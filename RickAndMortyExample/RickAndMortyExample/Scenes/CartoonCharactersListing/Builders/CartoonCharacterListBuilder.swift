@@ -6,9 +6,9 @@
 //
 
 struct CartoonCharacterListBuilder: SceneBuilding {
-  private let characterService: CartoonCharacterService
+  private let characterService: CartoonCharacterServiceProtocol
   
-  init(characterService: CartoonCharacterService) {
+  init(characterService: CartoonCharacterServiceProtocol) {
     self.characterService = characterService
   }
   

@@ -21,8 +21,8 @@ final class CartoonCharacterDetailViewModel: ObservableObject {
   private var loadImageTask: Task<Void, Never>?
   
   init(
-    cartoonCharacterService: CartoonCharacterServiceProtocol = CartoonCharacterService(),
-    imageService: ImageServiceProtocol = ImageService.shared
+    cartoonCharacterService: CartoonCharacterServiceProtocol,
+    imageService: ImageServiceProtocol
   ) {
     self.cartoonCharacterService = cartoonCharacterService
     self.imageService = imageService
@@ -60,11 +60,21 @@ final class CartoonCharacterDetailViewModel: ObservableObject {
     
     loadImageTask = Task { [weak self] in
       guard let self = self else { return }
-      let image = await imageService.loadImage(from: urlString)
+      let result = await imageService.loadImage(from: urlString)
       if Task.isCancelled { return }
       await MainActor.run {
         self.isImageLoading = false
-        self.postImage = image
+        switch result {
+        case let .success(image):
+          self.postImage = image
+        case .failure:
+          /**
+           This isn't handling the error.
+           Improvement here could be to properly handle the error and show a message or a thumbnail
+           that would refelect the error and in case trying again to re-download the Image after the Tap.
+           */
+          self.postImage = nil
+        }
       }
     }
   }

@@ -17,16 +17,16 @@ final class MockImageService: ImageServiceProtocol {
   var loadURLs: [String] = []
   var cancelledURLs: [String] = []
   var invocation: [Invocation] = []
-  var result: UIImage? = nil
+  var result: Result<UIImage, Error>? = nil
   var delay: TimeInterval = 0
   
-  func loadImage(from urlString: String) async -> UIImage? {
+  func loadImage(from urlString: String) async -> Result<UIImage, Error> {
     loadURLs.append(urlString)
     invocation.append(.loadImage)
     if delay > 0 {
       try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
     }
-    return result
+    return result ?? .success(UIImage())
   }
   
   func cancelLoad(for urlString: String) {

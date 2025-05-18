@@ -10,7 +10,7 @@ import XCTest
 
 extension XCTestCase {
   func assertSnapshot(of view: UIView, testName: String = #function) {
-    assertSnapshot(matching: view, as: .image, testName: testName)
+    assertSnapshot(matching: view, as: .image(traits: .init(userInterfaceStyle: .dark)), testName: testName)
   }
   
   func assertSnapshot<Value, Format>(

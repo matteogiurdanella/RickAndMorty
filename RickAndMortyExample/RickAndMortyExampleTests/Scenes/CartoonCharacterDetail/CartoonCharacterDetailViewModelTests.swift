@@ -14,7 +14,7 @@ struct CartoonCharacterDetailViewModelTests {
   func fetchCharacterSuccessAndLoadsImage() async throws {
     // Given
     let imageService = MockImageService()
-    imageService.result = UIImage()
+    imageService.result = .success(UIImage())
     let mockNetworkService = MockNetworkService()
     mockNetworkService.responseType = .characterDetail
     let mockService = CartoonCharacterService(networkService: mockNetworkService)

@@ -12,13 +12,6 @@ protocol CartoonCharacterServiceProtocol {
   func fetchCharacter(by id: Int) async -> Result<CartoonCharacter, Error>
 }
 
-// TODO: Try to remove this
-extension CartoonCharacterServiceProtocol {
-  func fetchCharacters(page: Int = 1) async -> Result<CartoonCharacterListPageModel, Error> {
-    await fetchCharacters(page: page)
-  }
-}
-
 final class CartoonCharacterService: CartoonCharacterServiceProtocol {
   private let networkService: NetworkServiceProtocol
   
@@ -30,7 +23,7 @@ final class CartoonCharacterService: CartoonCharacterServiceProtocol {
     self.networkService = networkService
   }
   
-  func fetchCharacters(page: Int = 1) async -> Result<CartoonCharacterListPageModel, Error> {
+  func fetchCharacters(page: Int) async -> Result<CartoonCharacterListPageModel, Error> {
     return await networkService.fetch(from: "character", queryItems: ["page": "\(page)"])
   }
   

@@ -18,7 +18,7 @@ final class CartoonCharacterDetailBuilder: SceneBuilding {
   init(
     characterId: Int,
     cartoonCharacterService: CartoonCharacterServiceProtocol,
-    imageService: ImageServiceProtocol = ImageService.shared
+    imageService: ImageServiceProtocol
   ) {
     self.characterId = characterId
     self.cartoonCharacterService = cartoonCharacterService

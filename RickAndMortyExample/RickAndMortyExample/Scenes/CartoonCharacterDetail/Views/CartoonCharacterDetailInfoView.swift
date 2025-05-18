@@ -20,33 +20,27 @@ struct CartoonCharacterDetailsInfoView: View {
         .font(.title)
         .fontWeight(.bold)
         .padding(.bottom, 8)
-      Text(
-        "\(localizer.localize(key: .status, fallbackValue: .status)): \(character.status.rawValue)"
-      )
-      .font(.body)
-      Divider()
-      Text(
-        "\(localizer.localize(key: .species, fallbackValue: .species)): \(character.species)"
-      )
-      .font(.body)
-      Divider()
-      Text(
-        "\(localizer.localize(key: .gender, fallbackValue: .gender)): \(character.gender)"
-      )
-      .font(.body)
-      Divider()
-      Text(
-        "\(localizer.localize(key: .origin, fallbackValue: .origin)): \(character.origin.name)"
-      )
-      .font(.body)
-      Divider()
-      Text(
-        "\(localizer.localize(key: .location, fallbackValue: .location)): \(character.location.name)"
-      )
-      .font(.body)
+      
+      ForEach(Array(detailItems.enumerated()), id: \.element.label) { index, item in
+        VStack(alignment: .leading, spacing: 4) {
+          Text("\(item.label): \(item.value)")
+            .font(.body)
+        }
+      }
     }
     .padding()
     .accessibilityElement()
     .accessibilityLabel(character.accessibilityDescription)
+ 
+  }
+  
+  private var detailItems: [(label: String, value: String)] {
+    [
+      (localizer.localize(key: .status, fallbackValue: .status), character.status.rawValue),
+      (localizer.localize(key: .species, fallbackValue: .species), character.species),
+      (localizer.localize(key: .gender, fallbackValue: .gender), character.gender.rawValue),
+      (localizer.localize(key: .origin, fallbackValue: .origin), character.origin.name),
+      (localizer.localize(key: .location, fallbackValue: .location), character.location.name)
+    ]
   }
 }

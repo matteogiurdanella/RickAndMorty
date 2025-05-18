@@ -25,36 +25,57 @@ final class CartoonCharacterDetailSnapshotTests: XCTestCase {
   private lazy var uiView: UIView? = UIHostingController(rootView: view).view
   
   func testCharacterDetailErrorMesssage() throws {
+    // Given
     viewModel.isLoading = false
     viewModel.errorMessage = "Something went wrong"
+    
+    // When
     let view = try XCTUnwrap(uiView)
+    
+    // Then
     assertSnapshot(of: view, testName: #function)
   }
   
   func testCharacterDetailIsLoading() throws {
+    // Given
     viewModel.isLoading = true
+    
+    // When
     let view = try XCTUnwrap(uiView)
+    
+    // Then
     assertSnapshot(of: view, testName: #function)
   }
   
   func testCharacterDetailInfo() throws {
+    // Given
     viewModel.isLoading = false
     viewModel.errorMessage = nil
     viewModel.character = character
+    
+    // When
     let view = try XCTUnwrap(uiView)
+    
+    // Then
     assertSnapshot(of: view, testName: #function)
   }
   
   func testCharacterDetailImageLoading() throws {
+    // Given
     viewModel.isLoading = false
     viewModel.errorMessage = nil
     viewModel.character = character
     viewModel.isImageLoading = true
+    
+    // When
     let view = try XCTUnwrap(uiView)
+    
+    // Then
     assertSnapshot(of: view, testName: #function)
   }
   
   func testCharacterDetailInfoAndImage() throws {
+    // Given
     viewModel.isLoading = false
     viewModel.errorMessage = nil
     viewModel.character = character
@@ -63,7 +84,11 @@ final class CartoonCharacterDetailSnapshotTests: XCTestCase {
       return XCTFail("File not found")
     }
     viewModel.postImage = UIImage(contentsOfFile: imagePath)
+    
+    // When
     let view = try XCTUnwrap(uiView)
+    
+    // Then
     assertSnapshot(of: view, testName: #function)
   }
 }

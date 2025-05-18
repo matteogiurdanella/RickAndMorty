@@ -18,35 +18,55 @@ final class CartoonCharacterListSnapshotTests: XCTestCase {
   ]
   
   func testListOfCharacter() {
+    // Given
     let viewModel = CartoonCharacterListViewModel()
     viewModel.characters = characters
+    
+    // When
     let view = CartoonCharacterListView(viewModel: viewModel).snapshotSize()
     let uiView = UIHostingController(rootView: view).view!
+    
+    // Then
     assertSnapshot(of: uiView, testName: #function)
   }
   
   func testErrorMessage() {
+    // Given
     let viewModel = CartoonCharacterListViewModel()
     viewModel.errorMessage = "Cannot Load"
+    
+    // When
     let view = CartoonCharacterListView(viewModel: viewModel).snapshotSize()
     let uiView = UIHostingController(rootView: view).view!
+    
+    // Then
     assertSnapshot(of: uiView, testName: #function)
   }
   
   func testIsLoading() {
+    // Given
     let viewModel = CartoonCharacterListViewModel()
     viewModel.isLoading = true
+    
+    // When
     let view = CartoonCharacterListView(viewModel: viewModel).snapshotSize()
     let uiView = UIHostingController(rootView: view).view!
+    
+    // Then
     assertSnapshot(of: uiView, testName: #function)
   }
   
   func testSearch() {
+    // Given
     let viewModel = CartoonCharacterListViewModel()
     viewModel.characters = characters
     viewModel.searchText = "Morty"
+    
+    // When
     let view = CartoonCharacterListView(viewModel: viewModel).snapshotSize()
     let uiView = UIHostingController(rootView: view).view!
+    
+    // Then
     assertSnapshot(of: uiView, testName: #function)
   }
 }
