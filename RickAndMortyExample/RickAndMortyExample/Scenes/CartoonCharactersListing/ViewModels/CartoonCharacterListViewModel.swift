@@ -18,10 +18,6 @@ final class CartoonCharacterListViewModel: ObservableObject {
   private let charactersService: CartoonCharacterServiceProtocol
   private var currentPage = 1
   private var isFirstLoad: Bool = true
-  var nextPage: Int {
-    currentPage = currentPage + 1
-    return currentPage
-  }
   
   init(charactersService: CartoonCharacterServiceProtocol = CartoonCharacterService()) {
     self.charactersService = charactersService
@@ -37,7 +33,8 @@ final class CartoonCharacterListViewModel: ObservableObject {
     if
       let index = characters.firstIndex(where: { $0.id == character.id }),
       index == characters.count - 5 {
-        await fetchCartoonCharacters(page: nextPage)
+        currentPage += 1
+        await fetchCartoonCharacters(page: currentPage)
     }
   }
   

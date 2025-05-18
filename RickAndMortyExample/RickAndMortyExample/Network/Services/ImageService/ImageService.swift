@@ -40,7 +40,6 @@ actor ImageService: ImageServiceProtocol {
   }
   
   func loadImage(from urlString: String) async -> Result<UIImage, Error> {
-    print(runningTasks)
     if let cachedImage = cache.object(forKey: urlString as NSString) {
       return .success(cachedImage)
     }
@@ -58,7 +57,6 @@ actor ImageService: ImageServiceProtocol {
     let task = Task<Result<UIImage, Error>, Never> {
       do {
         let (data, response) = try await session.data(from: url)
-        print(response)
         guard let httpResponse = response as? HTTPURLResponse,
               (200...299).contains(httpResponse.statusCode),
               let image = UIImage(data: data) else {
