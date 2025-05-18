@@ -8,7 +8,7 @@
 @testable import RickAndMortyExample
 
 extension CartoonCharacterService {
-  static func mock() -> CartoonCharacterService {
+  static func mock() -> CartoonCharacterServiceProtocol {
     CartoonCharacterService(
       networkService: MockNetworkService()
     )

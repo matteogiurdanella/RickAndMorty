@@ -50,3 +50,13 @@ struct CartoonCharacter: Decodable, Identifiable {
     """
   }
 }
+
+extension CartoonCharacter: Hashable {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
+  
+  public static func == (lhs: CartoonCharacter, rhs: CartoonCharacter) -> Bool {
+    lhs.id == rhs.id
+  }
+}

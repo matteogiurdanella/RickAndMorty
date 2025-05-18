@@ -9,44 +9,47 @@ import Foundation
 import UIKit
 import Combine
 
-class CartoonCharacterDetailViewModel: ObservableObject {
+final class CartoonCharacterDetailViewModel: ObservableObject {
   @Published var character: CartoonCharacter?
-  @Published var isLoading = true
+  @Published var isLoading = false
   @Published var errorMessage: String?
-//  
-  // Image-related properties
   @Published var postImage: UIImage?
   @Published var isImageLoading = false
   
-  private let cartoonCharacterService: CartoonCharacterService
+  private let cartoonCharacterService: CartoonCharacterServiceProtocol
   private let imageService: ImageServiceProtocol
   private var loadImageTask: Task<Void, Never>?
   
   init(
-    cartoonCharacterService: CartoonCharacterService = .init(),
+    cartoonCharacterService: CartoonCharacterServiceProtocol = CartoonCharacterService(),
     imageService: ImageServiceProtocol = ImageService.shared
   ) {
     self.cartoonCharacterService = cartoonCharacterService
     self.imageService = imageService
   }
   
-  @MainActor
   func fetchCharacter(id: Int) async {
-    isLoading = true
-    errorMessage = nil
+    await MainActor.run {
+      isLoading = true
+      errorMessage = nil
+    }
     
     do {
       let result = await cartoonCharacterService.fetchCharacter(by: id)
       switch result {
       case let .success(model):
-        character = model
+        await MainActor.run {
+          isLoading = false
+          character = model
+        }
         await loadCharacterImage(from: model.image)
       case let .failure(error):
-        errorMessage = (error as? NetworkError)?.errorDescription ?? error.localizedDescription
+        await MainActor.run {
+          isLoading = false
+          errorMessage = (error as? NetworkError)?.errorDescription ?? error.localizedDescription
+        }
       }
     }
-    
-    isLoading = false
   }
   
   private func loadCharacterImage(from urlString: String) async {
@@ -60,13 +63,13 @@ class CartoonCharacterDetailViewModel: ObservableObject {
       let image = await imageService.loadImage(from: urlString)
       if Task.isCancelled { return }
       await MainActor.run {
-        self.postImage = image
         self.isImageLoading = false
+        self.postImage = image
       }
     }
   }
   
   deinit {
-//    loadImageTask?.cancel()
+    loadImageTask?.cancel()
   }
 }

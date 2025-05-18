@@ -9,11 +9,11 @@ import SwiftUI
 
 struct CartoonCharacterDetailView: View {
   let characterId: Int
-  @ObservedObject private var viewModel: CartoonCharacterDetailViewModel
+  @StateObject var viewModel: CartoonCharacterDetailViewModel
   
   init(characterId: Int, viewModel: CartoonCharacterDetailViewModel) {
     self.characterId = characterId
-    self.viewModel = viewModel
+    self._viewModel = StateObject(wrappedValue: viewModel)
   }
   
   var body: some View {
