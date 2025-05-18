@@ -98,4 +98,4 @@ While my background includes **UIKit + VIPER** and **SwiftUI + VIPER-State**, I 
 
 | List Character | Character Detail | Flow |
 | ------ | ------ | ------ |
-|/Users/matteogiurdanella/Documents/Workspace/RickAndMortyExample/CharacterList.png|/Users/matteogiurdanella/Documents/Workspace/RickAndMortyExample/CharcaterDetail.png|/Users/matteogiurdanella/Documents/Workspace/RickAndMortyExample/Flow.gif|
+|/Screenshots/CharacterList.png|/Screenshots/CharcaterDetail.png|/Screenshots/Flow.gif|
