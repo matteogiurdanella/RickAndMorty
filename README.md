@@ -96,6 +96,11 @@ While my background includes **UIKit + VIPER** and **SwiftUI + VIPER-State**, I 
 
 ## 📸 Screenshots
 
-| List Character | Character Detail | Flow |
-| ------ | ------ | ------ |
-|![](Screenshots/CharacterList.png)|![](Screenshots/CharcaterDetail.png)|![](Screenshots/Flow.gif)|
+| List Character | Character Detail |
+| ------ | ------ |
+|![](Screenshots/CharacterList.png)|![](Screenshots/CharcaterDetail.png)|
+
+## 🌊 Flow
+| Flow |
+| ------ |
+|![](Screenshots/Flow.gif)|
