@@ -98,9 +98,53 @@ While my background includes **UIKit + VIPER** and **SwiftUI + VIPER-State**, I 
 
 | List Character | Character Detail |
 | ------ | ------ |
-|![](Screenshots/CharacterList.png)|![](Screenshots/CharcaterDetail.png)|
+|<img src="Screenshots/CharacterList.png" width="250" />|<img src="Screenshots/CharcaterDetail.png" width="250" />|
 
 ## 🌊 Flow
 | Flow |
 | ------ |
 |![](Screenshots/Flow.gif)|
+
+---
+
+##  🔧 Next Steps & Areas for Improvement
+
+### 🧱 Overall Architecture
+
+- **Improve Dependency Injection**  
+  Currently manual — can be replaced with a lightweight DI framework or builder layer to manage dependencies cleanly.
+
+- **Make Snapshot UI Tests Work in CI**  
+  Currently skipped due to Xcode Cloud limitations. Explore GitHub Actions or local simulators via `xcodebuild` for full snapshot validation.
+
+- **Add Code Coverage Reporting**  
+  Integrate [Slather](https://github.com/SlatherOrg/slather) to track code coverage metrics in CI pipelines.
+
+- **Add SwiftLint**  
+  While the code is clean, using [SwiftLint](https://github.com/realm/SwiftLint) ensures standardization and helps avoid subtle mistakes, even in solo projects.
+
+- **Analytics and Tracking**  
+  Add hooks for analytics (e.g. screen visits, tap events) with protocols to keep layers decoupled.
+
+- **Design System Foundation**  
+  Introduce a simple design system for spacing, colors, fonts, and reusable UI components to improve consistency and scaling.
+
+- **SwiftUI Previews**  
+  Add `.preview` variants for each view to aid development and documentation — omitted here due to fast compile times.
+
+---
+
+### 💡 Specific Improvements
+
+#### 📡 NetworkService
+
+- Inject `URLSession` for better testability (mirroring `ImageService`)
+- Improve error handling by mapping raw errors to custom, typed error enums
+
+#### 🖼️ `CartoonPhotoCellView`
+
+- Improve testability by isolating state and simplifying retry/image rendering logic
+
+#### 🧪 UI Testing
+
+- Extend UI tests to validate user flows (scrolling, tapping, error states), not just static rendering via snapshot tests
