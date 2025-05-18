@@ -8,3 +8,11 @@
 var localizer: Localizing {
   Localizer.shared
 }
+
+var imageService: ImageServiceProtocol {
+  ImageService.shared
+}
+
+var cartoonCharacterService: CartoonCharacterServiceProtocol {
+  CartoonCharacterService()
+}

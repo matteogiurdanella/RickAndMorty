@@ -48,6 +48,7 @@
 				Mocks/MockImageService.swift,
 				Mocks/MockNetworkService.swift,
 				Mocks/MockResponseFile.swift,
+				Mocks/MockURLProtocol.swift,
 			);
 			target = 2C8180112DD88B120060B55C /* RickAndMortyExampleSnapshotTests */;
 		};

@@ -12,7 +12,7 @@ struct RickAndMortyExampleApp: App {
   var body: some Scene {
     WindowGroup {
       CartoonCharacterListBuilder(
-        characterService: .init()
+        characterService: cartoonCharacterService
       ).view
     }
   }

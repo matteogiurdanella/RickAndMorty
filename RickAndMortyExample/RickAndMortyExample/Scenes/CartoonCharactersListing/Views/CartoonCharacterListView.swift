@@ -23,41 +23,45 @@ struct CartoonCharacterListView: View {
               await viewModel.fetchCartoonCharactersOnRetry()
             }
           }
-        } else {
-          List(viewModel.filteredCharacters) { character in
-            NavigationLink(
-              destination: CartoonCharacterDetailBuilder(
-                characterId: character.id,
-                cartoonCharacterService: CartoonCharacterService()
-              ).view
-            ) {
-              CartoonCharacterCell(character: character)
-                .onAppear {
-                  Task {
-                    await viewModel.fetchMoreCharactersIfNeeded(character)
-                  }
-                }
-            }
-          }
-          .listStyle(PlainListStyle())
-          .searchable(
-            text: $viewModel.searchText,
-            placement: .navigationBarDrawer(displayMode: .always),
-            prompt: localizer.localize(key: .search, fallbackValue: .search)
-          )
-          .refreshable {
-            await viewModel.fetchCartoonCharactersOnRefresh()
-          }
-        }
-        
-        if viewModel.isLoading {
+        } else if viewModel.isLoading {
           LoadingView()
+        } else {
+          characterListView
         }
       }
       .navigationTitle(localizer.localize(key: .characters, fallbackValue: .characters))
       .task {
         await viewModel.fetchCartoonCharactersOnAppear()
       }
+    }
+  }
+  
+  @ViewBuilder
+  private var characterListView: some View {
+    List(viewModel.filteredCharacters) { character in
+      NavigationLink(
+        destination: CartoonCharacterDetailBuilder(
+          characterId: character.id,
+          cartoonCharacterService: cartoonCharacterService,
+          imageService: imageService
+        ).view
+      ) {
+        CartoonCharacterCell(character: character)
+          .onAppear {
+            Task {
+              await viewModel.fetchMoreCharactersIfNeeded(character)
+            }
+          }
+      }
+    }
+    .listStyle(PlainListStyle())
+    .searchable(
+      text: $viewModel.searchText,
+      placement: .navigationBarDrawer(displayMode: .always),
+      prompt: localizer.localize(key: .search, fallbackValue: .search)
+    )
+    .refreshable {
+      await viewModel.fetchCartoonCharactersOnRefresh()
     }
   }
 }

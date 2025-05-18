@@ -39,15 +39,14 @@ final class CartoonCharacterCellPhotoViewModel: ObservableObject {
     loadTask = Task { [weak self] in
       guard let self = self else { return }
       
-      let loadedImage = await imageService.loadImage(from: imageUrl)
+      let result = await imageService.loadImage(from: imageUrl)
       
-      // Check if task was cancelled
       if Task.isCancelled { return }
-
       self.isLoading = false
-      if let loadedImage = loadedImage {
-        self.image = loadedImage
-      } else {
+      switch result {
+      case let .success(image):
+        self.image = image
+      case .failure:
         self.loadFailed = true
       }
     }

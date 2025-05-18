@@ -9,26 +9,40 @@ import Foundation
 import UIKit
 
 protocol ImageServiceProtocol {
-  func loadImage(from urlString: String) async -> UIImage?
+  func loadImage(from urlString: String) async -> Result<UIImage, Error>
   func cancelLoad(for urlString: String)
 }
 
+/**
+ Actor is was used to prevent multiple access at the same time given that this service is handling a cache
+ and keeping track of the runningTasks
+ */
 actor ImageService: ImageServiceProtocol {
   
   static let shared = ImageService()
   
+  private var session: URLSession
   private let cache = NSCache<NSString, UIImage>()
-  private var runningTasks: [String: Task<UIImage?, Never>] = [:]
+  private var runningTasks: [String: Task<Result<UIImage, Error>, Never>] = [:]
+  
+  #if DEBUG
+  init (session: URLSession) {
+    self.session = session
+    cache.countLimit = 100
+    cache.totalCostLimit = 1024 * 1024 * 100
+  }
+  #endif
   
   private init() {
+    self.session = .shared
     cache.countLimit = 100
     cache.totalCostLimit = 1024 * 1024 * 100
   }
   
-  func loadImage(from urlString: String) async -> UIImage? {
-    // Return cached image if available
+  func loadImage(from urlString: String) async -> Result<UIImage, Error> {
+    print(runningTasks)
     if let cachedImage = cache.object(forKey: urlString as NSString) {
-      return cachedImage
+      return .success(cachedImage)
     }
     
     // Return running task if already in progress
@@ -36,26 +50,25 @@ actor ImageService: ImageServiceProtocol {
       return await existingTask.value
     }
     
-    // Ensure the URL is valid
     guard let url = URL(string: urlString) else {
-      return nil
+      return .failure(NetworkError.invalidURL)
     }
     
     // Create a new task to load the image
-    let task = Task<UIImage?, Never> {
+    let task = Task<Result<UIImage, Error>, Never> {
       do {
-        let (data, response) = try await URLSession.shared.data(from: url)
-        
+        let (data, response) = try await session.data(from: url)
+        print(response)
         guard let httpResponse = response as? HTTPURLResponse,
               (200...299).contains(httpResponse.statusCode),
               let image = UIImage(data: data) else {
-          return nil
+          return .failure(NetworkError.invalidResponse)
         }
         
         self.cache.setObject(image, forKey: urlString as NSString)
-        return image
+        return .success(image)
       } catch {
-        return nil
+        return .failure(NetworkError.unknown(error))
       }
     }
     

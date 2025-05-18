@@ -18,7 +18,7 @@ final class CartoonCharacterServiceTests {
     networkService.responseType = .characterList
     
     // When
-    let pageModel = try await sut.fetchCharacters().get()
+    let pageModel = try await sut.fetchCharacters(page: 1).get()
     
     // Then
     #expect(pageModel.info.count == 826)
